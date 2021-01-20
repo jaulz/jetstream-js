@@ -63,6 +63,7 @@ class InertiaForm {
             bag: 'default',
             resetOnSuccess: true,
             setInitialOnSuccess: false,
+            transform: (data) => data,
         };
 
         if (options.hasOwnProperty('bag')) {
@@ -75,6 +76,10 @@ class InertiaForm {
 
         if (options.hasOwnProperty('setInitialOnSuccess')) {
             this.__options.setInitialOnSuccess = options.setInitialOnSuccess;
+        }
+
+        if (options.hasOwnProperty('transform')) {
+            this.__options.transform = options.transform;
         }
 
         return this;
@@ -153,7 +158,7 @@ class InertiaForm {
                 .then(then)
         }
 
-        return this.__inertia[requestType](url, this.hasFiles() ? objectToFormData(this.data()) : this.data(), options)
+        return this.__inertia[requestType](url, this.__options.transform(this.hasFiles() ? objectToFormData(this.data()) : this.data()), options)
             .then(then)
     }
 
